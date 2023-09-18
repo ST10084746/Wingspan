@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "718435340277",
+    "project_id": "wingspan-a9ddf",
+    "storage_bucket": "wingspan-a9ddf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:718435340277:android:8be51c63fed5e9db179abc",
+        "android_client_info": {
+          "package_name": "com.example.wingspan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJ7cxGmtlvTHxBnOHMiJGxw48JrUGSY4E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
