@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Wingspan</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="login_redirect">ALready have an account? Login</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_up_redirect">Dont have an account? Sign up</string>
 </resources>
