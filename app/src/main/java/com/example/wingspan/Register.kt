@@ -66,7 +66,8 @@ class Register : AppCompatActivity() {
         super.onStart()
         val currentUser = auth.currentUser
         if(currentUser!=null){
-            //reload()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
 
 
