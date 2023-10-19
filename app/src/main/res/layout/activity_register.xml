@@ -67,7 +67,8 @@
             android:text="@string/sign_up"
             android:id="@+id/btn_signup"
             android:textSize="18sp"
-            app:cornerRadius = "30dp"/>
+            app:cornerRadius = "30dp"
+            android:backgroundTint="@color/WingSpanRed"/>
 
 
         <TextView

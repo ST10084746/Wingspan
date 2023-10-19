@@ -49,6 +49,8 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Overlay
+import org.osmdroid.views.overlay.OverlayItem
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.IMyLocationConsumer
 import org.osmdroid.views.overlay.mylocation.IMyLocationProvider
@@ -61,12 +63,6 @@ import retrofit2.Response
 class MapFragment : Fragment(), IMyLocationProvider, MapListener, GpsStatus.Listener {
 
     private val LOCATION_REQUEST_CODE = 0;
-
-    private lateinit var locationManager: LocationManager
-    private lateinit var locationListener: LocationListener
-
-
-    //init binding
 
     //mapview and map controller
     private lateinit var mapView: MapView
@@ -82,7 +78,6 @@ class MapFragment : Fragment(), IMyLocationProvider, MapListener, GpsStatus.List
         super.onCreate(savedInstanceState)
 
 
-
     }
 
 
@@ -91,89 +86,8 @@ class MapFragment : Fragment(), IMyLocationProvider, MapListener, GpsStatus.List
         savedInstanceState: Bundle?
     ): View? {
 
-
         val view = inflater.inflate(R.layout.fragment_map, container, false)
-        Configuration.getInstance().load(
-            requireContext(),
-            requireContext().getSharedPreferences("osmdroid", 0)
-        )
 
-
-        val policy = ThreadPolicy.Builder().permitAll().build()
-        StrictMode.setThreadPolicy(policy)
-        mapView =  view.findViewById(R.id.mvOne)
-
-        mapView.setTileSource(TileSourceFactory.MAPNIK)
-        mapView.mapCenter
-        mapView.setMultiTouchControls(true)
-        mapView.getLocalVisibleRect(Rect())
-        mapController = mapView.controller
-
-
-        //set the initial zoom
-        mapController.setZoom(20.0)
-
-        managePermissions()
-
-        mapView.setMultiTouchControls(true)
-
-        myLocationOverLay = MyLocationNewOverlay(GpsMyLocationProvider(requireContext()), mapView)
-        myLocationOverLay.enableMyLocation()
-        //init the start point
-        val geoPoint = myLocationOverLay.myLocation
-        val startPoint = GeoPoint(geoPoint.latitude, geoPoint.longitude)
-        mapController.setCenter(startPoint)
-        mapController.setZoom(18.0)
-
-        //create marker
-
-        val marker = Marker(mapView)
-        marker.position = startPoint
-
-        marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.baseline_location_on_24, null)
-
-        //add click listener to marker
-
-        marker.setOnMarkerClickListener { marker, mapView ->
-            val latitude = marker.position.latitude
-            val longitude = marker.position.longitude
-            val dialog = Dialog(requireContext())
-            dialog.setContentView(R.layout.custom)
-
-            val window = dialog.window
-            window?.setBackgroundDrawableResource(android.R.color.transparent)
-            window?.setGravity(Gravity.BOTTOM)
-            window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-
-            val directionsButton = dialog.findViewById<Button>(R.id.directionsButton)
-            val longitudeTextView = dialog.findViewById<TextView>(R.id.longitudeTextView)
-            val latitudeTextView = dialog.findViewById<TextView>(R.id.latitudeTextView)
-
-            longitudeTextView.text = "Test Longitude: $longitude"
-            latitudeTextView.text = "Test Latitude: $latitude"
-
-            dialog.show()
-
-
-            directionsButton.setOnClickListener{
-
-                val startPoint = GeoPoint(startPoint) //
-                val endPoint = GeoPoint(-29.9300,  31.1000) //
-                getDirections(startPoint.latitude, startPoint.longitude, endPoint.latitude, endPoint.longitude)
-                dialog.hide()
-                // Get the list of route instructions
-                val routeInstructions = getRouteInstructions(startPoint.latitude, startPoint.longitude, endPoint.latitude, endPoint.longitude)
-
-                Log.d("routeInstructions","$routeInstructions")
-                // Display the route instructions in a CardView dialog
-                showRouteInstructionsDialog(routeInstructions)
-            }
-
-            true // return true to indicate that the event has been consumed
-        }
-
-        //add marker to mapview
-        mapView.overlays.add(marker)
 
         return view
 
@@ -215,10 +129,13 @@ class MapFragment : Fragment(), IMyLocationProvider, MapListener, GpsStatus.List
                 stepMarker.title = step.mInstructions
                 stepMarker.icon = ContextCompat.getDrawable(requireContext(), R.drawable.directions) // Customize the marker icon
                 mapView.overlays.add(stepMarker)
+
             }
         }
-        mapView.overlays.add(roadOverlay)
 
+        val last = mapView.overlays.last()
+        mapView.getOverlays().remove(last);
+        mapView.overlays.add(roadOverlay)
 
         // Calculate the bounding box to fit the overlay
         val boundingBox = roadOverlay.bounds
@@ -226,8 +143,8 @@ class MapFragment : Fragment(), IMyLocationProvider, MapListener, GpsStatus.List
         mapView.controller.setCenter(boundingBox.centerWithDateLine)
         // Zoom to fit the bounding box with padding (adjust as needed)
         mapView.zoomToBoundingBox(boundingBox, true, 50)
-        mapView.invalidate()
 
+        mapView.invalidate()
     }
 
     private fun getRouteInstructions(startLat: Double, startLong: Double, endLat: Double, endLong: Double): ArrayList<String> {
@@ -258,7 +175,7 @@ class MapFragment : Fragment(), IMyLocationProvider, MapListener, GpsStatus.List
         return routeSteps
     }
 
-    private fun showRouteInstructionsDialog(routeInstructions: ArrayList<String>) {
+    private fun showRouteInstructionsDialog(routeInstructions: ArrayList<String>, targetPoint: GeoPoint ) {
         // Create a custom dialog
         val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.dialog_route_steps) // Set the CardView layout
@@ -279,6 +196,8 @@ class MapFragment : Fragment(), IMyLocationProvider, MapListener, GpsStatus.List
         val beginNavigationButton = dialog.findViewById<Button>(R.id.beginNavigationButton)
         beginNavigationButton.setOnClickListener {
             // Handle the "Begin Navigation" button click
+            mapController.setCenter(targetPoint)
+            mapController.setZoom(20.0);
             // You can start the navigation here
             dialog.dismiss() // Close the dialog
         }
@@ -294,8 +213,82 @@ class MapFragment : Fragment(), IMyLocationProvider, MapListener, GpsStatus.List
         hotspots = arrayListOf()
         prefs = PreferenceManager.getDefaultSharedPreferences(this.requireContext())
 
+        Configuration.getInstance().load(
+            requireContext(),
+            requireContext().getSharedPreferences("osmdroid", 0)
+        )
 
+        val policy = ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        mapView =  view.findViewById(R.id.mvOne)
+
+        mapView.setTileSource(TileSourceFactory.MAPNIK)
+        mapView.mapCenter
+        mapView.setMultiTouchControls(true)
+        mapView.getLocalVisibleRect(Rect())
+        mapController = mapView.controller
+
+
+        //set the initial zoom
+        mapController.setZoom(20.0)
+
+        managePermissions()
+
+        mapView.setMultiTouchControls(true)
+
+        myLocationOverLay = MyLocationNewOverlay(GpsMyLocationProvider(requireContext()), mapView)
+        myLocationOverLay.enableMyLocation()
+        //init the start point
+        val geoPoint = myLocationOverLay.myLocation
+        val startPoint = GeoPoint(-29.8393456,30.8427937)
+        mapController.setCenter(startPoint)
+        mapController.setZoom(20.0)
+
+        //create marker
+
+        val marker = Marker(mapView)
+        marker.position = startPoint
+
+        marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.baseline_location_on_24, null)
+
+        //add click listener to marker
+
+        marker.setOnMarkerClickListener { marker, mapView ->
+
+            val latitude = marker.position.latitude
+            val longitude = marker.position.longitude
+            val dialog = Dialog(requireContext())
+            dialog.setContentView(R.layout.custom)
+
+            val window = dialog.window
+            window?.setBackgroundDrawableResource(android.R.color.transparent)
+            window?.setGravity(Gravity.BOTTOM)
+            window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+            val nameTextView = dialog.findViewById<TextView>(R.id.nameTextView)
+            val directionsButton = dialog.findViewById<Button>(R.id.directionsButton)
+            val longitudeTextView = dialog.findViewById<TextView>(R.id.longitudeTextView)
+            val latitudeTextView = dialog.findViewById<TextView>(R.id.latitudeTextView)
+
+            nameTextView.text = "You're Here!"
+            longitudeTextView.text = "Longitude: $longitude"
+            directionsButton.text = "Return to Map"
+            latitudeTextView.text = "Latitude: $latitude"
+
+            dialog.show()
+
+
+            directionsButton.setOnClickListener{
+              dialog.hide()
+            }
+
+            true // return true to indicate that the event has been consumed
+        }
+
+        //add marker to mapview
+        mapView.overlays.add(marker)
         getHotSpots()
+
     }
     private  fun  addToList(hotspot: Hotspot){
         hotspots.add(hotspot)
@@ -347,10 +340,82 @@ class MapFragment : Fragment(), IMyLocationProvider, MapListener, GpsStatus.List
                     addToList(hotspot)
                 }
 
+
+
                 hotspots.forEach{ ob ->
                     Log.e(ContentValues.TAG, "responses: " + ob.locName)
                     println(ob.locName)
+
                 }
+
+                val policy = ThreadPolicy.Builder().permitAll().build()
+                StrictMode.setThreadPolicy(policy)
+                mapView =  view!!.findViewById(R.id.mvOne)
+
+                mapView.setTileSource(TileSourceFactory.MAPNIK)
+                mapView.mapCenter
+                mapView.setMultiTouchControls(true)
+                mapView.getLocalVisibleRect(Rect())
+                mapController = mapView.controller
+
+
+                //set the initial zoom
+                mapController.setZoom(15.0)
+
+                managePermissions()
+
+                mapView.setMultiTouchControls(true)
+
+
+                for (hotspot in hotspots) {
+                    val marker = Marker(mapView)
+                    marker.position = GeoPoint(hotspot.lat, hotspot.lng)
+                    marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.baseline_location_on_24, null)
+                    marker.setOnMarkerClickListener { marker, mapView ->
+                        val latitude = marker.position.latitude
+                        val longitude = marker.position.longitude
+                        val dialog = Dialog(requireContext())
+                        dialog.setContentView(R.layout.custom)
+
+                        val window = dialog.window
+                        window?.setBackgroundDrawableResource(android.R.color.transparent)
+                        window?.setGravity(Gravity.BOTTOM)
+                        window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+                        val directionsButton = dialog.findViewById<Button>(R.id.directionsButton)
+                        val nameTextView = dialog.findViewById<TextView>(R.id.nameTextView)
+                        val longitudeTextView = dialog.findViewById<TextView>(R.id.longitudeTextView)
+                        val latitudeTextView = dialog.findViewById<TextView>(R.id.latitudeTextView)
+
+                        nameTextView.text = hotspot.locName
+                        longitudeTextView.text = "Longitude: $longitude"
+                        latitudeTextView.text = "Latitude: $latitude"
+
+                        dialog.show()
+
+
+                        directionsButton.setOnClickListener{
+                            val startPoint = GeoPoint(-29.8393456,30.8427937)
+                            val endPoint = GeoPoint(hotspot.lat,  hotspot.lng) //
+                            getDirections(startPoint.latitude, startPoint.longitude, endPoint.latitude, endPoint.longitude)
+                            dialog.hide()
+                            // Get the list of route instructions
+                            val routeInstructions = getRouteInstructions(startPoint.latitude, startPoint.longitude, endPoint.latitude, endPoint.longitude)
+
+                            Log.d("routeInstructions","$routeInstructions")
+                            // Display the route instructions in a CardView dialog
+                            showRouteInstructionsDialog(routeInstructions, startPoint)
+                        }
+
+                        true // return true to indicate that the event has been consumed
+                    }
+
+                    mapView.overlays.add(marker)
+
+                }
+
+
+                mapView.invalidate()
             }
 
             override fun onFailure(call: Call<ArrayList<Hotspot>>, t: Throwable) {
