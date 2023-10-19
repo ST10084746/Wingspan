@@ -56,6 +56,9 @@ class AddObservationFragment : Fragment() {
                 .add(sighting)
                 .addOnSuccessListener {
                     Toast.makeText(context, "Observation Added", Toast.LENGTH_SHORT).show()
+                    etSciName.text.clear()
+                    etComName.text.clear()
+                    etSpecCode.text.clear()
                 }
                 .addOnFailureListener {
                     Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()

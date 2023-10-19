@@ -54,10 +54,19 @@ class MapFragment : Fragment() {
 
     private fun getRange(): Int{
 
-        val distance = prefs.getInt("range", 25)
+        val distanceString = prefs.getString("range", "25")
+        var distance = 0
         val switch = prefs.getBoolean("unit", false)
 
         var multiplier = 0.0
+
+        if (distanceString!!.toInt()==null){
+            distance = 25
+        }
+        else {
+            distance = distanceString!!.toInt()
+        }
+
 
 
         if(switch){
@@ -78,7 +87,7 @@ class MapFragment : Fragment() {
      private fun getHotSpots(){
         val latitude = -29.88
         val longitude = 31.04
-        val distance = 25
+        val distance = getRange()
         val fmt = "json"
 
          retroClient= Retro()
@@ -102,6 +111,8 @@ class MapFragment : Fragment() {
                     Log.e(ContentValues.TAG, "responses: " + ob.locName)
                     println(ob.locName)
                 }
+                Log.e(ContentValues.TAG, "responses: " + distance )
+                println(distance)
             }
 
             override fun onFailure(call: Call<ArrayList<Hotspot>>, t: Throwable) {
