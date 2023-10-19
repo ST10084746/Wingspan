@@ -3,4 +3,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red"> #FF3453</color>
+    <color name="WingSpanRed">#e83c34</color>
 </resources>

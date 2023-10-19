@@ -16,6 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 lateinit var countDownTimer: CountDownTimer
 
 
+
 class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var toolbar: Toolbar
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
         toolbar = findViewById(R.id.toolbar)
         bottomNavigationView = findViewById(R.id.bottom_nav)
 
@@ -38,18 +41,11 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         bottomNavigationView.setupWithNavController(navController)
 
-
-
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp()|| super.onSupportNavigateUp()
     }
-
-
-
-
 
 
     private fun attemptRequest() {

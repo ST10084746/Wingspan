@@ -59,4 +59,5 @@ dependencies {
     implementation("org.osmdroid:osmdroid-android:6.1.16")
     implementation("com.github.MKergall:osmbonuspack:6.9.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("androidx.fragment:fragment-ktx:1.6.1")
 }
