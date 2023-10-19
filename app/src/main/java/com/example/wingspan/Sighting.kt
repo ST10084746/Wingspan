@@ -1,7 +1,7 @@
 package com.example.wingspan
 
 data class Sighting(
-    var specCode: String,
-    var sciName: String,
-    var comName: String
+    var speciesCode: String?=null,
+    var sciName: String?=null,
+    var comName: String?=null
 )

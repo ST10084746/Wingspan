@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/mapFragment"
+        android:title="Map"
+        android:icon="@drawable/baseline_map_24"/>
+
+    <item
+        android:id="@+id/observationFragment2"
+        android:title="Observations"
+        android:icon="@drawable/baseline_folder_24"/>
+
+    <item
+        android:id="@+id/addObservationFragment2"
+        android:title="Add Observations"
+        android:icon="@drawable/baseline_add_circle_24"/>
+
+    <item
+        android:id="@+id/settingsFragment2"
+        android:title="Settings"
+        android:icon="@drawable/baseline_settings_24"/>
+
+</menu>

@@ -7,13 +7,33 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recView"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:background="@color/red"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:id="@+id/nav_host_fragment"
+        android:layout_above="@id/bottom_nav"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph"/>
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
-        tools:listitem="@layout/item_view"/>
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_nav_menu"/>
+
+
 
     <View
         android:id="@+id/v_blackScreen"
@@ -21,14 +41,6 @@
         android:layout_height="match_parent"
         android:background="@color/black"
         android:visibility="gone"/>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
-
 
 
 </RelativeLayout>

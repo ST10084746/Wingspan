@@ -1,0 +1,21 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="MAIN SETTINGS">
+
+        <EditTextPreference
+            app:defaultValue="25"
+            app:key="range"
+            app:title="Distance"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            app:key="unit"
+            app:summaryOff="Using KM as unit of measurement"
+            app:summaryOn="Using Miles as unit of measurement"
+            app:title="Switch Between KM and Miles" />
+
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

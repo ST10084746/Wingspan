@@ -5,11 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.wingspan.Models.Observation
-import com.example.wingspan.Models.ObservationItem
 
-class SightingAdapter(private val observations: ArrayList<ObservationItem>): RecyclerView.Adapter<SightingAdapter.SightingViewHolder>() {
+class SightingAdapter(private val observations: ArrayList<Sighting>): RecyclerView.Adapter<SightingAdapter.SightingViewHolder>() {
     inner class SightingViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         var speciesCode: TextView = itemView.findViewById(R.id.tvSpecCode)
         var sciName: TextView = itemView.findViewById(R.id.tvSciName)
