@@ -1,26 +1,75 @@
 package com.example.wingspan.Fragments
 
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.app.Dialog
 import android.content.ContentValues
+import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.Rect
+import android.location.GpsStatus
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
 import android.util.Log
-import androidx.fragment.app.Fragment
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.mapthree.RouteInstructionsAdapter
 import com.example.wingspan.EBirdApiService
 import com.example.wingspan.Models.Hotspot
 import com.example.wingspan.R
 import com.example.wingspan.Retro
-import com.example.wingspan.Sighting
+import org.osmdroid.api.IMapController
+import org.osmdroid.bonuspack.routing.OSRMRoadManager
+import org.osmdroid.bonuspack.routing.RoadManager
+import org.osmdroid.config.Configuration
+import org.osmdroid.events.MapListener
+import org.osmdroid.events.ScrollEvent
+import org.osmdroid.events.ZoomEvent
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Overlay
+import org.osmdroid.views.overlay.OverlayItem
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
+import org.osmdroid.views.overlay.mylocation.IMyLocationConsumer
+import org.osmdroid.views.overlay.mylocation.IMyLocationProvider
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class MapFragment : Fragment() {
+class MapFragment : Fragment(), IMyLocationProvider, MapListener, GpsStatus.Listener {
+
+    private val LOCATION_REQUEST_CODE = 0;
+
+    //mapview and map controller
+    private lateinit var mapView: MapView
+    private lateinit var mapController: IMapController
+    private lateinit var myLocationOverLay: MyLocationNewOverlay
+    private lateinit var controller: IMapController
+
     private lateinit var retroClient: Retro
     private lateinit var hotspots: ArrayList<Hotspot>
     private lateinit var prefs: SharedPreferences
@@ -34,13 +83,6 @@ class MapFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-<<<<<<< Updated upstream
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_map, container, false)
-    }
-
-
-=======
 
         val view = inflater.inflate(R.layout.fragment_map, container, false)
 
@@ -160,16 +202,17 @@ class MapFragment : Fragment() {
         dialog.show()
     }
 
->>>>>>> Stashed changes
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
         hotspots = arrayListOf()
         prefs = PreferenceManager.getDefaultSharedPreferences(this.requireContext())
 
+        Configuration.getInstance().load(
+            requireContext(),
+            requireContext().getSharedPreferences("osmdroid", 0)
+        )
 
-<<<<<<< Updated upstream
-=======
         val policy = ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         mapView =  view.findViewById(R.id.mvOne)
@@ -239,8 +282,8 @@ class MapFragment : Fragment() {
 
         //add marker to mapview
         mapView.overlays.add(marker)
->>>>>>> Stashed changes
         getHotSpots()
+
     }
     private  fun  addToList(hotspot: Hotspot){
         hotspots.add(hotspot)
@@ -248,24 +291,11 @@ class MapFragment : Fragment() {
 
     private fun getRange(): Int{
 
-        val distanceString = prefs.getString("range", "25")
-        var distance = 0
+        val distance = prefs.getInt("range", 25)
         val switch = prefs.getBoolean("unit", false)
 
         var multiplier = 0.0
 
-<<<<<<< Updated upstream
-        if (distanceString!!.toInt()==null){
-            distance = 25
-        }
-        else {
-            distance = distanceString!!.toInt()
-        }
-
-
-
-=======
->>>>>>> Stashed changes
         if(switch){
             multiplier = 1.6
         } else{
@@ -284,7 +314,7 @@ class MapFragment : Fragment() {
      private fun getHotSpots(){
         val latitude = -29.88
         val longitude = 31.04
-        val distance = getRange()
+        val distance = 25
         val fmt = "json"
 
          retroClient= Retro()
@@ -305,13 +335,6 @@ class MapFragment : Fragment() {
                 }
 
                 hotspots.forEach{ ob ->
-<<<<<<< Updated upstream
-                    Log.e(ContentValues.TAG, "responses: " + ob.locName)
-                    println(ob.locName)
-                }
-                Log.e(ContentValues.TAG, "responses: " + distance )
-                println(distance)
-=======
                     //Log.e(ContentValues.TAG, "responses: " + ob.locName)
                     //println(ob.locName)
 
@@ -385,7 +408,6 @@ class MapFragment : Fragment() {
                 }
 
                 mapView.invalidate()
->>>>>>> Stashed changes
             }
             override fun onFailure(call: Call<ArrayList<Hotspot>>, t: Throwable) {
                 Log.e(ContentValues.TAG, t.message.toString())
@@ -393,5 +415,85 @@ class MapFragment : Fragment() {
 
         })
 
+    }
+
+    override fun startLocationProvider(myLocationConsumer: IMyLocationConsumer?): Boolean {
+
+        TODO("Not yet implemented")
+    }
+
+    override fun stopLocationProvider() {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLastKnownLocation(): Location {
+        TODO("Not yet implemented")
+    }
+
+    override fun destroy() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onScroll(event: ScrollEvent?): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun onZoom(event: ZoomEvent?): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGpsStatusChanged(event: Int) {
+        TODO("Not yet implemented")
+    }
+
+    private fun isLocationPermissionGranted(): Boolean{
+        val finelocation = ActivityCompat.checkSelfPermission(requireContext(),
+            ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        val courselocation = ActivityCompat.checkSelfPermission(requireContext(),
+            ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        return finelocation && courselocation
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == LOCATION_REQUEST_CODE){
+            if(grantResults.isNotEmpty()){
+                for(result in grantResults){
+                    Toast.makeText(requireContext(), "Permissions Granted", Toast.LENGTH_SHORT).show()
+                    if(result == PackageManager.PERMISSION_GRANTED){
+                        //Handle permission granted
+                        //you coiuld re-initialize the map here if needed
+                        //setupMap()
+                    }
+                    else{
+                        Toast.makeText(requireContext(), "Permissions Denied", Toast.LENGTH_SHORT).show()
+
+                    }
+                }
+            }
+        }
+    } //me
+
+
+
+    private fun managePermissions(){
+        val requestPermissions = mutableListOf<String>()
+        if(!isLocationPermissionGranted()){
+            //if these weren't granted
+
+            requestPermissions.add(ACCESS_FINE_LOCATION)
+            requestPermissions.add(ACCESS_COARSE_LOCATION)
+        }
+        if(requestPermissions.isNotEmpty()){
+
+        }
     }
 }

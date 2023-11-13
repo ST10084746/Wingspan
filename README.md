@@ -1,6 +1,3 @@
-<<<<<<< Updated upstream
-# Wingspan
-=======
  #Wingspan App  (Android)
 ***
 An app for bird enthusists to find bbirdwatching hotspots and save their observations
@@ -120,4 +117,3 @@ A--> Yes the app can select a hotspost and get dorections to it from their locat
 
 
 
->>>>>>> Stashed changes
