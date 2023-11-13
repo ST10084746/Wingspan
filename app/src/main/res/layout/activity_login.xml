@@ -51,7 +51,8 @@
             android:text="@string/log_in"
             android:id="@+id/btn_login"
             android:textSize="18sp"
-            app:cornerRadius = "30dp"/>
+            app:cornerRadius = "30dp"
+            android:backgroundTint="@color/WingSpanRed"/>
 
 
         <TextView

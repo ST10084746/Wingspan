@@ -63,36 +63,7 @@ class AddObservationFragment : Fragment() {
 
         db = FirebaseFirestore.getInstance()
 
-<<<<<<< Updated upstream
-        btnUploadSighting = view.findViewById(R.id.btn_uploadSighting)
-        etComName = view.findViewById(R.id.et_comName)
-        etSpecCode = view.findViewById(R.id.et_specCode)
-        etSciName = view.findViewById(R.id.et_sciName)
-
-
-
-        btnUploadSighting.setOnClickListener {
-            var sighting : MutableMap<String, Any> = HashMap()
-            sighting["speciesCode"] = etSpecCode.text.toString()
-            sighting["sciName"] = etSciName.text.toString()
-            sighting["comName"] = etComName.text.toString()
-
-            db.collection("Observations")
-                .add(sighting)
-                .addOnSuccessListener {
-                    Toast.makeText(context, "Observation Added", Toast.LENGTH_SHORT).show()
-                    etSciName.text.clear()
-                    etComName.text.clear()
-                    etSpecCode.text.clear()
-                }
-                .addOnFailureListener {
-                    Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
-                }
-
-
-=======
         auth = FirebaseAuth.getInstance()
->>>>>>> Stashed changes
 
         hotspots = arrayListOf()
         hotSpotSpinner = view.findViewById(R.id.hotSpotSpinner)

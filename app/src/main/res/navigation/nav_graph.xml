@@ -8,20 +8,20 @@
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.example.wingspan.Fragments.MapFragment"
-        android:label="fragment_map"
+        android:label="Map"
         tools:layout="@layout/fragment_map" />
     <fragment
         android:id="@+id/observationFragment2"
         android:name="com.example.wingspan.Fragments.observationFragment"
-        android:label="fragment_observation"
+        android:label="Your Observations"
         tools:layout="@layout/fragment_observation" />
     <fragment
         android:id="@+id/settingsFragment2"
         android:name="com.example.wingspan.Fragments.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="Settings" />
     <fragment
         android:id="@+id/addObservationFragment2"
         android:name="com.example.wingspan.Fragments.AddObservationFragment"
-        android:label="fragment_add_observation"
+        android:label="Add Observation"
         tools:layout="@layout/fragment_add_observation" />
 </navigation>

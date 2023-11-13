@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
@@ -11,14 +12,15 @@
         android:background="@color/red"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:title="Map"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
         android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_below="@id/toolbar"
         android:id="@+id/nav_host_fragment"
         android:layout_above="@id/bottom_nav"
         app:defaultNavHost="true"
@@ -31,5 +33,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_nav_menu"/>
+
+    <View
+        android:id="@+id/v_blackScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:visibility="gone"/>
+
 
 </RelativeLayout>
