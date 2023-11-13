@@ -26,7 +26,6 @@ class Login : AppCompatActivity() {
 
             //validating textview input
 
-
             if (email.isNotEmpty() && password.isNotEmpty()){
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                     if (it.isSuccessful){
@@ -59,7 +58,5 @@ class Login : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-
-
     }
 }
