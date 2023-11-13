@@ -23,7 +23,6 @@ class observationFragment : Fragment() {
     private lateinit var sightingAdapter: SightingAdapter
     private lateinit var db: FirebaseFirestore
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -43,7 +42,6 @@ class observationFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recView);
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-
         sightingAdapter = SightingAdapter(observations)
 
         recyclerView.adapter = sightingAdapter
@@ -54,8 +52,6 @@ class observationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
     }
-
-
 
     private  fun  addToList(sighting: Sighting){
         observations.add(sighting)
@@ -72,12 +68,12 @@ class observationFragment : Fragment() {
                 for (document in result){
                     observations.add(document.toObject(Sighting:: class.java))
                 }
+
                 sightingAdapter.notifyDataSetChanged()
 
             }
             .addOnFailureListener{exception->
                 Log.w(ContentValues.TAG, "Error getting Documents.", exception)
-
             }
     }
 

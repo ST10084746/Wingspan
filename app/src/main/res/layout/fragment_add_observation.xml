@@ -6,6 +6,7 @@
     android:orientation="vertical"
     tools:context=".Fragments.AddObservationFragment">
 
+<<<<<<< Updated upstream
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -108,3 +109,95 @@
 
 
 </ScrollView>
+=======
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="10dp">
+
+        <EditText
+            android:id="@+id/et_specCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="@string/species_code"
+            android:inputType="textLongMessage"
+            android:autofillHints="Event Name"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginHorizontal="10dp">
+
+        <EditText
+            android:id="@+id/et_sciName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="@string/scientific_name"
+            android:inputType="textLongMessage"
+            android:autofillHints="Event Name"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginHorizontal="10dp">
+
+        <EditText
+            android:id="@+id/et_comName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="@string/common_name"
+            android:inputType="textLongMessage"
+            android:autofillHints="Event Name"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_hotspot_optional" />
+
+        <Spinner
+            style="@style/Widget.AppCompat.Spinner.DropDown"
+            android:id="@+id/hotSpotSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:autofillHints="name"/>
+
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_uploadSighting"
+        android:text="@string/add_sighting"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/WingSpanRed"/>
+
+</LinearLayout>
+>>>>>>> Stashed changes

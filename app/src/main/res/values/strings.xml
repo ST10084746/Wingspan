@@ -25,4 +25,9 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="species_code">Species Code</string>
+    <string name="scientific_name">Scientific Name</string>
+    <string name="common_name">Common Name</string>
+    <string name="add_sighting">Add Sighting</string>
+    <string name="choose_hotspot_optional">Choose Hotspot (Optional)</string>
 </resources>

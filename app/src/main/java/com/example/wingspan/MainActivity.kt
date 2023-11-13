@@ -24,6 +24,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         toolbar = findViewById(R.id.toolbar)
         bottomNavigationView = findViewById(R.id.bottom_nav)
 
@@ -38,8 +42,14 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         bottomNavigationView.setupWithNavController(navController)
 
+<<<<<<< Updated upstream
 
 
+=======
+        bottomNavigationView
+
+        toolbar.setTitle("Map")
+>>>>>>> Stashed changes
 
     }
 
