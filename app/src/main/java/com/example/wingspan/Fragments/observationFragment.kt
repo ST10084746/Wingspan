@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wingspan.R
 import com.example.wingspan.Retro
-import com.example.wingspan.Sighting
+import com.example.wingspan.Models.Sighting
 import com.example.wingspan.SightingAdapter
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -53,9 +53,7 @@ class observationFragment : Fragment() {
 
     }
 
-    private  fun  addToList(sighting: Sighting){
-        observations.add(sighting)
-    }
+
 
 
 

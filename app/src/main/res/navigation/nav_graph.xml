@@ -24,4 +24,40 @@
         android:name="com.example.wingspan.Fragments.AddObservationFragment"
         android:label="Add Observation"
         tools:layout="@layout/fragment_add_observation" />
+    <fragment
+        android:id="@+id/infoFragment2"
+        android:name="com.example.wingspan.Fragments.InfoFragment"
+        android:label="Taxonomy"
+        tools:layout="@layout/fragment_info" >
+        <action
+            android:id="@+id/action_infoFragment2_to_taxonomyFragment"
+            app:destination="@id/taxonomyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taxonomyFragment"
+        android:name="com.example.wingspan.Fragments.TaxonomyFragment"
+        android:label="Details"
+        tools:layout="@layout/fragment_taxonomy">
+        <argument
+            android:name="commonName"
+            app:argType="string" />
+        <argument
+            android:name="sciName"
+            app:argType="string" />
+        <argument
+            android:name="specCode"
+            app:argType="string" />
+        <argument
+            android:name="category"
+            app:argType="string" />
+        <argument
+            android:name="famComName"
+            app:argType="string" />
+        <argument
+            android:name="famCode"
+            app:argType="string" />
+        <argument
+            android:name="famSciName"
+            app:argType="string" />
+    </fragment>
 </navigation>
