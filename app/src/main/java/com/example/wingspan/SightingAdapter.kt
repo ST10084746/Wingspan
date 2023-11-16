@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wingspan.Models.Sighting
 
 class SightingAdapter(private val observations: ArrayList<Sighting>): RecyclerView.Adapter<SightingAdapter.SightingViewHolder>() {
     inner class SightingViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){

@@ -1,5 +1,6 @@
 package com.example.wingspan
 
+import com.example.wingspan.Models.BirdInfoItem
 import com.example.wingspan.Models.Hotspot
 import retrofit2.Call
 import retrofit2.http.GET
@@ -12,7 +13,6 @@ interface EBirdApiService {
         "X-eBirdApiToken:sc304p1n3apg"
     )
     @GET("data/obs/geo/recent")
-
     fun getBirdData(
         @Query("lat") latitude: Double,
         @Query("lng") longitude: Double,
@@ -20,5 +20,10 @@ interface EBirdApiService {
         @Query("fmt") fmt: String,
 
     ): Call<ArrayList<Hotspot>>
+
+    @GET("ref/taxonomy/ebird")
+    fun getInfo(
+        @Query("fmt") format: String
+    ):Call<ArrayList<BirdInfoItem>>
 
 }
