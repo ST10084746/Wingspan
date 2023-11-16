@@ -17,6 +17,13 @@ class TaxonomyFragment : Fragment() {
     private val navigationArgs: TaxonomyFragmentArgs by navArgs()
     private lateinit var info: BirdInfoItem
     private lateinit var tvComName:TextView
+    private lateinit var tvCategory:TextView
+    private lateinit var tvSciName:TextView
+    private lateinit var tvfamSciName:TextView
+    private lateinit var tvSpecCode:TextView
+    private lateinit var tvFamCode:TextView
+    private lateinit var tvFamComName:TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -30,9 +37,22 @@ class TaxonomyFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        info = navigationArgs.BirdInfo
+
         tvComName = view.findViewById(R.id.tvCommNameDetails)
-        tvComName.text = info.comName;
+        tvFamCode = view.findViewById(R.id.tvfamCode)
+        tvCategory = view.findViewById(R.id.tvcategory)
+        tvSciName = view.findViewById(R.id.tvSciName)
+        tvFamComName = view.findViewById(R.id.tvfamComName)
+        tvSpecCode = view.findViewById(R.id.tvspeciesCode)
+        tvfamSciName = view.findViewById(R.id.tvfamSciName)
+
+        tvComName.text = navigationArgs.commonName;
+        tvSciName.text = navigationArgs.sciName
+        tvSpecCode.text = navigationArgs.specCode
+        tvCategory.text = navigationArgs.category
+        tvFamComName.text = navigationArgs.famComName
+        tvFamCode.text = navigationArgs.famCode
+        tvfamSciName.text = navigationArgs.famSciName
 
         super.onViewCreated(view, savedInstanceState)
     }

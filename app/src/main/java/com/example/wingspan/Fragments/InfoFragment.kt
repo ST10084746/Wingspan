@@ -32,7 +32,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [InfoFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class InfoFragment : Fragment(), InfoAdapter.OnItemClickListener {
+class InfoFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var information: ArrayList<BirdInfoItem>
     private lateinit var infoAdapter: InfoAdapter
@@ -56,9 +56,22 @@ class InfoFragment : Fragment(), InfoAdapter.OnItemClickListener {
         recyclerView = view.findViewById(R.id.infoRecView);
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        infoAdapter = InfoAdapter(information, this);
+        infoAdapter = InfoAdapter(information);
+
+        infoAdapter.onItemClick = {
+            val action = InfoFragmentDirections.actionInfoFragment2ToTaxonomyFragment(
+                it.comName,
+                it.sciName,
+                it.speciesCode,
+                it.category,
+                it.familyComName,
+                it.familyCode,
+                it.familySciName)
+            findNavController().navigate(action)
+        }
+
         recyclerView.adapter = infoAdapter;
-        recyclerView
+
 
 
         loadInfo()
@@ -67,11 +80,10 @@ class InfoFragment : Fragment(), InfoAdapter.OnItemClickListener {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onItemClick(position: Int) {
-        val action = InfoFragmentDirections.actionInfoFragment2ToTaxonomyFragment(information[position])
-        findNavController().navigate(action)
+    //override fun onItemClick(position: Int) {
+     //
 
-    }
+    //}
 
     private  fun  addToList(info: BirdInfoItem){
         information.add(info)

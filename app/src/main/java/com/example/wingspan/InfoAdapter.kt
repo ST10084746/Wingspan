@@ -10,27 +10,18 @@ import com.example.wingspan.Models.BirdInfoItem
 
 class InfoAdapter(
     private val information: ArrayList<BirdInfoItem>,
-    private val listener: OnItemClickListener
-    ): RecyclerView.Adapter<InfoAdapter.InfoViewHolder>(){
 
-    inner class InfoViewHolder (itemView: View): RecyclerView.ViewHolder(itemView),
-    View.OnClickListener{
+    ): RecyclerView.Adapter<InfoAdapter.InfoViewHolder>(){
+    var onItemClick : ((BirdInfoItem)-> Unit)? = null;
+
+
+    inner class InfoViewHolder (itemView: View): RecyclerView.ViewHolder(itemView)
+    {
         var commonName: TextView = itemView.findViewById(R.id.tvCommonName);
 
-        init {
-            itemView.setOnClickListener(this)
-        }
-
-        override fun onClick(p0: View?) {
-            val position: Int = adapterPosition
-            listener.onItemClick(position)
-
-        }
 
     }
-    interface OnItemClickListener{
-        fun onItemClick(position:Int)
-    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoAdapter.InfoViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.info_list_item,parent, false)
         return InfoViewHolder(view);
@@ -39,6 +30,11 @@ class InfoAdapter(
     override fun onBindViewHolder(holder: InfoAdapter.InfoViewHolder, position: Int) {
         val info = information[position]
         holder.commonName.text = info.comName
+
+        holder.itemView.setOnClickListener {
+            onItemClick?.invoke(info)
+        }
+
     }
 
     override fun getItemCount(): Int {
