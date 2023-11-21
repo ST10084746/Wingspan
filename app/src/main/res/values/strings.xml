@@ -30,4 +30,6 @@
     <string name="common_name">Common Name</string>
     <string name="add_sighting">Add Sighting</string>
     <string name="choose_hotspot_optional">Choose Hotspot (Optional)</string>
+    <string name="logout">Logout</string>
+    <string name="request_account_deletion">Request Account Deletion</string>
 </resources>
